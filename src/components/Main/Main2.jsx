@@ -11,11 +11,12 @@ const Main2 = (props) => {
                 <figure><img className='w-full h-72' src={img} alt="Shoes" /></figure>
                 <div className="card-body">
                     <h2 className="card-title">{name}</h2>
-                    <p>Price: ${price}</p>
-                    <div className='mt-2'>
-                        <p>Ratings: {ratings} Start</p>
+                  <div>
+                  <p>Price: ${price}</p>
+                 
+                 <p>Ratings: {ratings} Start</p>
 
-                    </div>
+                  </div>
                 </div>
                 <button onClick={()=>handleAddCart(props.singleData)} style={{
                     marginBottom: '0px',
