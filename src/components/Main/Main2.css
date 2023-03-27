@@ -1,0 +1,6 @@
+.add-cart{
+background-color: rgb(222, 144, 102);
+}
+.add-cart:hover{
+    background-color: orangered;
+}
