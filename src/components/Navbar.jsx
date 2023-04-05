@@ -1,6 +1,7 @@
 import React from 'react';
 import './Navbar.css'
 import Logo from '../../images/Logo.svg';
+import { NavLink } from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -11,10 +12,10 @@ const Navbar = () => {
                     <img src={Logo} alt="" />
                 </div>
                 <div className='ancore text-white'>
-                    <a href="">Order</a>
-                    <a href="">Order View</a>
-                    <a href="">Manage Inventor</a>
-                    <a href="">Login</a>
+                    <NavLink className={({isActive})=> isActive? 'text-yellow-600' : 'default'} to="/Orders">Orders</NavLink>
+                    <NavLink className={({isActive})=> isActive? 'text-yellow-600' : 'default'} to="/inventory">Manage Inventor</NavLink>
+                    <NavLink className={({isActive})=> isActive? 'text-yellow-600' : 'default'} to="">Order View</NavLink>
+                    <NavLink className={({isActive})=> isActive? 'text-yellow-600' : 'default'} to="/login">Login</NavLink>
                 </div>
 
             </div>

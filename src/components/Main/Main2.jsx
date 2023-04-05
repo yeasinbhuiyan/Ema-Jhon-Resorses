@@ -3,6 +3,7 @@ import './Main2.css'
 const Main2 = (props) => {
     const { img, name, id, price, ratings } = props.singleData
     const handleAddCart = props.handleAddCart
+   
     
     return (
         <>
@@ -21,7 +22,7 @@ const Main2 = (props) => {
                 <button onClick={()=>handleAddCart(props.singleData)} style={{
                     marginBottom: '0px',
                     width: '100%', padding: '10px',
-                    borderRadius: '0 0 18px 18px'
+                    borderRadius: '0 0 15px 15px'
                 }} className='add-cart'>Add To Cart</button>
             </div>
         </>

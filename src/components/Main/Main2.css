@@ -2,5 +2,6 @@
 background-color:  #FFE0B3;
 }
 .add-cart:hover{
-    background-color: rgb(222, 144, 102)
+    background-color: rgb(255, 189, 138);
+    border: 1px solid rgba(0, 0, 0, 0.337);
 }
