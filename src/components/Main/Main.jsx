@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Main2 from './Main2';
 import './Main.css'
 import Calculate from '../Calculate/Calculate';
-import { addToDb, getShoppingCart } from '../../../utilities/fakedb';
+import { addToDb, deleteShoppingCart, getShoppingCart, removeFromDb } from '../../../utilities/fakedb';
 
 const Main = () => {
     const [data, setData] = useState([])
@@ -21,7 +21,7 @@ const Main = () => {
 
     useEffect(() => {
         const shoppingCart = getShoppingCart()
-        const savedCart =[]
+        const savedCart = []
         //    step 1 get id 
 
         for (const id in shoppingCart) {
@@ -35,7 +35,7 @@ const Main = () => {
                 // step 3 get quantity of the product 
                 const quantity = shoppingCart[id]
                 addedProduct.quantity = quantity
-                
+
                 // step 4 add to addedProduct to the saved cart 
                 savedCart.push(addedProduct)
 
@@ -58,7 +58,10 @@ const Main = () => {
 
 
     }
-
+    const handleClearToCart = () => {
+        setCart([])
+        deleteShoppingCart()
+    }
 
     return (
         <div className='container'>
@@ -70,7 +73,7 @@ const Main = () => {
 
             <div className='lg:ml-10'>
 
-                <Calculate cart={cart}></Calculate>
+                <Calculate  handleClearToCart={handleClearToCart} cart={cart}></Calculate>
 
             </div>
 
