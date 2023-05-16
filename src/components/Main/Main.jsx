@@ -99,6 +99,10 @@ const Main = () => {
         setCart(result)
         addToDb(product._id)
 
+
+
+        // support ebabe kore r gulo ema jhon er calculate er somossa gese kintu ekhane eta likhle ulta 
+        // somossa dei but na lekhle somossa dey na in future e jodi kaje lage ty eta comment kore rakhsi
         // const singleProduct = data.find(df => df._id === product._id)
         // if (singleProduct) {
 
