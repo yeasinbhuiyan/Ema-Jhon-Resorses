@@ -4,16 +4,19 @@ const cartProductsLoader = async () => {
     const storedCart = getShoppingCart()
     const ids = Object.keys(storedCart)
 
-    const res = await fetch('http://localhost:5000/productIds', {
+    const res = await fetch('http://localhost:5000/productsIds', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
         },
         body: JSON.stringify(ids)
     })
-    const products = await res.json()
 
-    console.log(getShoppingCart)
+
+    const products = await res.json()
+    console.log(products)
+
+    // console.log(getShoppingCart)
     const savedCart = []
 
     for (const id in storedCart) {
@@ -27,8 +30,6 @@ const cartProductsLoader = async () => {
         }
     }
 
-    // return {products,savedCart}
-    // return[products,savedCart]
 
     return savedCart
 }

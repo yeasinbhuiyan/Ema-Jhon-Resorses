@@ -7,6 +7,10 @@ import { useLoaderData } from 'react-router-dom';
 
 const Main = () => {
     const [data, setData] = useState([])
+
+
+
+
     const { totalProducts } = useLoaderData()
     const [itemsPerPage, setItemsPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(0)
@@ -16,24 +20,20 @@ const Main = () => {
 
 
     const paginationBtn = [...Array(calculatePage).keys()]
-
-
-
-
-
-
-
-
-
+    console.log(paginationBtn)
 
 
     const [cart, setCart] = useState([])
-    useEffect(() => {
-        fetch('http://localhost:5000/products')
-            .then(res => res.json())
-            .then(data => setData(data))
-    }, [])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(`http://localhost:5000/products?page=${currentPage}&limit=${itemsPerPage}`);
+            const jsonData = await response.json();
+            setData(jsonData);
+        };
+
+        fetchData();
+    }, [currentPage, itemsPerPage]);
 
 
 
@@ -41,29 +41,51 @@ const Main = () => {
 
     useEffect(() => {
         const shoppingCart = getShoppingCart()
-        const savedCart = []
+
+
+        const ids = Object.keys(shoppingCart)
+
+
+
+        fetch('http://localhost:5000/productsIds', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+
+            body: JSON.stringify(ids)
+        })
+            .then(res => res.json())
+            .then(ProductCart => {
+                const savedCart = []
+
+
+                for (const id in shoppingCart) {
+
+
+                    // step 2 get the product using by id
+                    const addedProduct = ProductCart.find(product => product._id === id)
+
+                    // jodi addedProduct thake tahole quantity boshbe addedProduct er bitor
+                    if (addedProduct) {
+                        // step 3 get quantity of the product 
+                        const quantity = shoppingCart[id]
+                        addedProduct.quantity = quantity
+
+                        // step 4 add to addedProduct to the saved cart 
+                        savedCart.push(addedProduct)
+
+                    }
+
+
+                }
+                setCart(savedCart)
+
+            })
+
+
         //    step 1 get id 
 
-        for (const id in shoppingCart) {
-
-
-            // step 2 get the product using by id
-            const addedProduct = data.find(product => product._id === id)
-
-            // jodi addedProduct thake tahole quantity boshbe addedProduct er bitor
-            if (addedProduct) {
-                // step 3 get quantity of the product 
-                const quantity = shoppingCart[id]
-                addedProduct.quantity = quantity
-
-                // step 4 add to addedProduct to the saved cart 
-                savedCart.push(addedProduct)
-
-            }
-
-
-        }
-        setCart(savedCart)
 
         // dependensi karone amra 2 bar abr call kore  ty dependensi dewa lage
     }, [data])
@@ -72,9 +94,28 @@ const Main = () => {
 
         // 1st step add to calculte in cart 
 
+
         const result = [...cart, product]
         setCart(result)
         addToDb(product._id)
+
+        // const singleProduct = data.find(df => df._id === product._id)
+        // if (singleProduct) {
+
+        //     const rest = data.filter(df => df._id !== product._id)
+        //     singleProduct.quantity++
+        //     setCart([...rest, singleProduct])
+        //     addToDb(product._id)
+
+        // }
+        // else {
+        //     const result = [...cart, product]
+        //     setCart(result)
+        //     addToDb(product._id)
+
+        // }
+
+
 
 
     }
@@ -111,25 +152,25 @@ const Main = () => {
                 </div>
 
             </div>
-            <div className='mx-auto text-center my-10'>
-                <div className='btn-group'>
+            <div className='mx-auto text-center mb-10'>
+                <p> currentPage: {currentPage}</p>
+                {
+                    paginationBtn.map(number => <button key={number}
+                        onClick={() => setCurrentPage(number)}
+
+                        className={currentPage === number ? 'btn-xs bg-orange-400' : 'btn btn-xs'}>{number}</button>)
+                }
+                <select value={itemsPerPage} onChange={handleSelectOption}>
+
                     {
-                        paginationBtn.map(number => {
-                            <button className={currentPage === number ? 'bg-orange-500 btn-xs' : 'btn-xs'} >{number}</button>
-                        })
+                        options.map((option => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        )))
                     }
+                </select>
 
-                    <select value={itemsPerPage} onChange={handleSelectOption}>
-                        {
-                            options.map(option => {
-                                <option>{option}</option>
-                            })
-                        }
-                    </select>
-
-
-
-                </div>
             </div>
 
         </>
