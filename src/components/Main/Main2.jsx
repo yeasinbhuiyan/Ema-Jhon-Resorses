@@ -1,7 +1,7 @@
 import React from 'react';
 import './Main2.css'
 const Main2 = (props) => {
-    const { img, name, id, price, ratings } = props.singleData
+    const { img, name, _id, price, ratings } = props.singleData
     const handleAddCart = props.handleAddCart
    
     

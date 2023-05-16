@@ -3,13 +3,33 @@ import Main2 from './Main2';
 import './Main.css'
 import Calculate from '../Calculate/Calculate';
 import { addToDb, deleteShoppingCart, getShoppingCart, removeFromDb } from '../../../utilities/fakedb';
+import { useLoaderData } from 'react-router-dom';
 
 const Main = () => {
     const [data, setData] = useState([])
+    const { totalProducts } = useLoaderData()
+    const [itemsPerPage, setItemsPerPage] = useState(10)
+    const [currentPage, setCurrentPage] = useState(0)
+
+
+    const calculatePage = Math.ceil(totalProducts / itemsPerPage)
+
+
+    const paginationBtn = [...Array(calculatePage).keys()]
+
+
+
+
+
+
+
+
+
+
 
     const [cart, setCart] = useState([])
     useEffect(() => {
-        fetch('products.json')
+        fetch('http://localhost:5000/products')
             .then(res => res.json())
             .then(data => setData(data))
     }, [])
@@ -28,7 +48,7 @@ const Main = () => {
 
 
             // step 2 get the product using by id
-            const addedProduct = data.find(product => product.id === id)
+            const addedProduct = data.find(product => product._id === id)
 
             // jodi addedProduct thake tahole quantity boshbe addedProduct er bitor
             if (addedProduct) {
@@ -54,7 +74,7 @@ const Main = () => {
 
         const result = [...cart, product]
         setCart(result)
-        addToDb(product.id)
+        addToDb(product._id)
 
 
     }
@@ -63,21 +83,56 @@ const Main = () => {
         deleteShoppingCart()
     }
 
+    const options = [5, 10, 15, 20]
+
+    const handleSelectOption = (event) => {
+        const selectItemsPerPage = event.target.value
+        setItemsPerPage(selectItemsPerPage)
+        currentPage(0)
+
+    }
+
+
+
+
     return (
-        <div className='container'>
-            <div className='grid grid-cols-1 md:grid-cols-2 my-5 lg:grid-cols-3 px-5 gap-4'>
-                {
-                    data.map(singleData => <Main2 key={singleData.id} handleAddCart={handleAddCart} singleData={singleData}></Main2>)
-                }
+        <>
+            <div className='container'>
+                <div className='grid grid-cols-1 md:grid-cols-2 my-5 lg:grid-cols-3 px-5 gap-4'>
+                    {
+                        data.map(singleData => <Main2 key={singleData._id} handleAddCart={handleAddCart} singleData={singleData}></Main2>)
+                    }
+                </div>
+
+                <div className='lg:ml-10'>
+
+                    <Calculate handleClearToCart={handleClearToCart} cart={cart}></Calculate>
+
+                </div>
+
+            </div>
+            <div className='mx-auto text-center my-10'>
+                <div className='btn-group'>
+                    {
+                        paginationBtn.map(number => {
+                            <button className={currentPage === number ? 'bg-orange-500 btn-xs' : 'btn-xs'} >{number}</button>
+                        })
+                    }
+
+                    <select value={itemsPerPage} onChange={handleSelectOption}>
+                        {
+                            options.map(option => {
+                                <option>{option}</option>
+                            })
+                        }
+                    </select>
+
+
+
+                </div>
             </div>
 
-            <div className='lg:ml-10'>
-
-                <Calculate  handleClearToCart={handleClearToCart} cart={cart}></Calculate>
-
-            </div>
-
-        </div>
+        </>
 
     );
 };

@@ -12,7 +12,7 @@ const Orders = () => {
 
     const handleRemoveFormCart =(id)=>{
         
-       const remaning=  cart.filter(singleCart => singleCart.id != id)
+       const remaning=  cart.filter(singleCart => singleCart._id != id)
 
        setCart(remaning)
 
@@ -31,7 +31,7 @@ const Orders = () => {
             <div className='review-container'> 
 
          {
-            cart.map(product => <ReviewItem handleRemoveFormCart={handleRemoveFormCart} key={product.id} product={product}></ReviewItem>)
+            cart.map(product => <ReviewItem handleRemoveFormCart={handleRemoveFormCart} key={product._id} product={product}></ReviewItem>)
          }
 
             </div>
